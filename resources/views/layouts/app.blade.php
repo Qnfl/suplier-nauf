@@ -29,12 +29,12 @@
           </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">User</a>
+          <a href="{{ route('user.index') }}" class="text-sm/6 font-semibold text-gray-900">User</a>
           <a href="{{ route('suplier.index') }}" class="text-sm/6 font-semibold text-gray-900">Suplier</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Stok</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Barang Masuk</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Barang Keluar</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Pinjam Barang</a>
+          <a href="{{ route('stok.index') }}" class="text-sm/6 font-semibold text-gray-900">Stok</a>
+          <a href="{{ route('barang_masuk.index') }}" class="text-sm/6 font-semibold text-gray-900">Barang Masuk</a>
+          <a href="{{ route('barang_keluar.index') }}" class="text-sm/6 font-semibold text-gray-900">Barang Keluar</a>
+          <a href="{{ route('pinjam_barang.index') }}" class="text-sm/6 font-semibold text-gray-900">Pinjam Barang</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
