@@ -35,9 +35,10 @@
           <a href="{{ route('barang_masuk.index') }}" class="text-sm/6 font-semibold text-gray-900">Barang Masuk</a>
           <a href="{{ route('barang_keluar.index') }}" class="text-sm/6 font-semibold text-gray-900">Barang Keluar</a>
           <a href="{{ route('pinjam_barang.index') }}" class="text-sm/6 font-semibold text-gray-900">Pinjam Barang</a>
+          <a href="{{ route('pinjam_barang.index') }}" class="text-sm/6 font-semibold text-gray-900">A</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+          <!-- <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a> -->
         </div>
       </nav>
       <!-- Mobile menu, show/hide based on menu open state. -->
@@ -67,9 +68,9 @@
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Barang Keluar</a>
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Pinjam Barang</a>
               </div>
-              <div class="py-6">
+              <!-- <div class="py-6">
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

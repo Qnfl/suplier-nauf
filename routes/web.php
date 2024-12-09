@@ -8,8 +8,11 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PinjamBarangController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 // Rute untuk halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('suplier.index');
@@ -17,17 +20,17 @@ Route::get('/', [HomeController::class, 'index'])->name('suplier.index');
 // Rute untuk menampilkan daftar supplier
 Route::get('/suplier', [SupplierController::class, 'index'])->name('suplier.index');
 
-// Rute untuk menampilkan form edit supplier
-Route::get('/suplier/{id}/edit', [SupplierController::class, 'edit'])->name('suplier.edit');
-
-// Rute untuk mengupdate supplier
-Route::put('/suplier/{id}', [SupplierController::class, 'update'])->name('suplier.update');
-
 // Rute untuk menampilkan form tambah supplier
 Route::get('/suplier/create', [SupplierController::class, 'create'])->name('suplier.create');
 
 // Rute untuk menyimpan supplier baru
 Route::post('/suplier', [SupplierController::class, 'store'])->name('suplier.store');
+
+// Rute untuk menampilkan form edit supplier
+Route::get('/suplier/{suplier}', [SupplierController::class, 'edit'])->name('suplier.edit');
+
+// Rute untuk mengupdate supplier
+Route::put('/suplier/{suplier}', [SupplierController::class, 'update'])->name('suplier.update');
 
 // Rute untuk menghapus supplier
 Route::delete('/suplier/{id}', [SupplierController::class, 'destroy'])->name('suplier.destroy');
@@ -60,13 +63,13 @@ Route::get('/barang-masuk/create', [BarangMasukController::class, 'create'])->na
 Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang_masuk.store');
 
 // Rute untuk menampilkan form edit barang masuk
-Route::get('/barang-masuk/{id}/edit', [BarangMasukController::class, 'edit'])->name('barang_masuk.edit');
+Route::get('/barang-masuk/{id_barang}/edit', [BarangMasukController::class, 'edit'])->name('barang_masuk.edit');
 
 // Rute untuk mengupdate barang masuk
-Route::put('/barang-masuk/{id}', [BarangMasukController::class, 'update'])->name('barang_masuk.update');
+Route::put('/barang-masuk/{id_barang}', [BarangMasukController::class, 'update'])->name('barang_masuk.update');
 
 // Rute untuk menghapus barang masuk
-Route::delete('/barang-masuk/{id}', [BarangMasukController::class, 'destroy'])->name('barang_masuk.destroy');
+Route::delete('/barang-masuk/{id_barang}', [BarangMasukController::class, 'destroy'])->name('barang_masuk.destroy');
 
 // Rute untuk menampilkan daftar barang
 Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
@@ -129,13 +132,22 @@ Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 
 // Rute untuk menyimpan pengguna baru
-Route::post('/user', [UserController::class, 'store'])->name('user.store');
+Route::post('/user', function(Request $request) {
+    Log::info('Route hit:', $request->all());
+    return app(UserController::class)->store($request);
+})->name('user.store');
 
 // Rute untuk menampilkan form edit pengguna
-Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::get('/user/{id_user}/edit', [UserController::class, 'edit'])->name('user.edit');
 
 // Rute untuk mengupdate pengguna
-Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+Route::put('/user/{id_user}', [UserController::class, 'update'])->name('user.update');
 
 // Rute untuk menghapus pengguna
-Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::delete('/user/{id_user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [LoginController::class, 'index'])->name('login.index')->middleware('guest');

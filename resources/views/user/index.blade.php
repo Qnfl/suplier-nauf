@@ -24,11 +24,14 @@
           <td class="py-2 px-4 border-b border-gray-200">{{ $user->username }}</td>
           <td class="py-2 px-4 border-b border-gray-200">{{ $user->level }}</td>
           <td class="py-2 px-4 border-b border-gray-200">
-            <a href="{{ route('user.edit', $user->id_user) }}" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-3 rounded">Edit</a>
-            <form action="{{ route('user.destroy', $user->id_user) }}" method="POST" style="display:inline;">
+            <!-- Edit Action -->
+            <a href="{{ route('user.edit', ['id_user' => $user->id_user]) }}" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-3 rounded">Edit</a>
+
+            <!-- Delete Form -->
+            <form action="{{ route('user.destroy', ['id_user' => $user->id_user]) }}" method="POST" style="display:inline;">
               @csrf
               @method('DELETE')
-              <button type="submit" class="bg-red-500 hover:bg-red-400 text-white font-bold py-1 px-3 rounded">Hapus</button>
+              <button type="submit" class="bg-red-500 hover:bg-red-400 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Yakin ingin menghapus pengguna ini?')">Hapus</button>
             </form>
           </td>
         </tr>

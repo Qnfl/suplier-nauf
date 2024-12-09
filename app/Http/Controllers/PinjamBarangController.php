@@ -1,9 +1,8 @@
 <?php
 
-// app/Http/Controllers/PinjamBarangController.php
 namespace App\Http\Controllers;
 
-use App\Models\Pinjam_Barang; // Pastikan Anda menggunakan model yang benar
+use App\Models\Pinjam_Barang; // Pastikan model sesuai dengan nama tabel
 use Illuminate\Http\Request;
 
 class PinjamBarangController extends Controller
@@ -24,18 +23,15 @@ class PinjamBarangController extends Controller
     // Menyimpan data pinjam barang ke database
     public function store(Request $request)
     {
-        // Validasi dan simpan data pinjam barang baru
+        // Validasi data yang diterima
         $request->validate([
             'peminjam' => 'required|string|max:255',
             'tgl_pinjam' => 'required|date',
-            'id_barang' => 'required|integer',
-            'nama_barang' => 'required|string|max:255',
             'jml_barang' => 'required|integer',
-            'tgl_kembali' => 'nullable|date',
-            'kondisi' => 'nullable|string',
         ]);
 
-        Pinjam_Barang::create($request->all()); // Simpan data pinjam barang baru
+        // Simpan data pinjam barang baru
+        Pinjam_Barang::create($request->only(['peminjam', 'tgl_pinjam', 'jml_barang']));
 
         return redirect()->route('pinjam_barang.index')->with('success', 'Pinjam barang created successfully.');
     }
@@ -43,26 +39,21 @@ class PinjamBarangController extends Controller
     // Menampilkan form untuk mengedit pinjam barang
     public function edit($id)
     {
-        $pinjamBarang = Pinjam_Barang::findOrFail($id); // Ambil data pinjam barang berdasarkan ID
-        return view('pinjam_barang.edit', compact('pinjamBarang')); // Pastikan nama file Blade sesuai
+        $pinjam = Pinjam_Barang::where('id_pinjam', $id)->firstOrFail(); // Ubah nama variabel
+        return view('pinjam_barang.edit', compact('pinjam')); // Sesuaikan dengan nama di view
     }
 
     // Mengupdate data pinjam barang
     public function update(Request $request, $id)
     {
-        // Validasi dan update data pinjam barang
         $request->validate([
             'peminjam' => 'required|string|max:255',
             'tgl_pinjam' => 'required|date',
-            'id_barang' => 'required|integer',
-            'nama_barang' => 'required|string|max:255',
             'jml_barang' => 'required|integer',
-            'tgl_kembali' => 'nullable|date',
-            'kondisi' => 'nullable|string',
         ]);
 
-        $pinjamBarang = Pinjam_Barang::findOrFail($id);
-        $pinjamBarang->update($request->all());
+        $pinjam = Pinjam_Barang::where('id_pinjam', $id)->firstOrFail(); // Ubah nama variabel
+        $pinjam->update($request->only(['peminjam', 'tgl_pinjam', 'jml_barang']));
 
         return redirect()->route('pinjam_barang.index')->with('success', 'Pinjam barang updated successfully.');
     }
@@ -70,8 +61,8 @@ class PinjamBarangController extends Controller
     // Menghapus data pinjam barang
     public function destroy($id)
     {
-        $pinjamBarang = Pinjam_Barang::findOrFail($id); // Ambil data pinjam barang berdasarkan ID
-        $pinjamBarang->delete(); // Hapus pinjam barang
+        $pinjam = Pinjam_Barang::where('id_pinjam', $id)->firstOrFail(); // Ubah nama variabel
+        $pinjam->delete();
 
         return redirect()->route('pinjam_barang.index')->with('success', 'Pinjam barang deleted successfully.');
     }

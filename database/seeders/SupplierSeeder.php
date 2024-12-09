@@ -13,20 +13,20 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('supplier')->insert([
+        DB::table('supliers')->insert([
             [
-                'id_supplier' => '111',
-                'nama_supplier' => 'PT Elektro',
-                'alamat_supplier' => 'Jl. Mangga Dua, Jakarta',
-                'telepon_supplier' => '089876543210',
+                'id_suplier' => '111',
+                'nama_suplier' => 'PT Elektro',
+                'alamat_suplier' => 'Jl. Mangga Dua, Jakarta',
+                'telp_suplier' => '089876543210',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_supplier' => '222',
-                'nama_supplier' => 'PT Elektrik',
-                'alamat_supplier' => 'Bekasi City Park',
-                'telepon_supplier' => '082345678901',
+                'id_suplier' => '222',
+                'nama_suplier' => 'PT Elektrik',
+                'alamat_suplier' => 'Bekasi City Park',
+                'telp_suplier' => '082345678901',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -1,10 +1,10 @@
 <?php
 
-// app/Http/Controllers/UserController.php
 namespace App\Http\Controllers;
 
-use App\Models\User; // Pastikan Anda menggunakan model yang benar
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -24,51 +24,68 @@ class UserController extends Controller
     // Menyimpan data pengguna ke database
     public function store(Request $request)
     {
-        // Validasi dan simpan data pengguna baru
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:user',
-            'password' => 'required|string|min:8',
-            'level' => 'required|string',
-        ]);
+        try {
+            // Debug input yang diterima
+            Log::info('Received user input:', $request->all());
 
-        User::create([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'password' => bcrypt($request->password), // Hash password
-            'level' => $request->level,
-        ]);
+            // Validasi input tanpa confirmed
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:user,username',
+                'password' => 'required|string|min:8', // Hapus confirmed
+                'level' => 'required|string',
+            ]);
 
-        return redirect()->route('user.index')->with('success', 'User created successfully.');
+            Log::info('Validation passed, creating user');
+
+            // Simpan pengguna baru
+            $user = User::create([
+                'nama' => $validated['nama'],
+                'username' => $validated['username'],
+                'password' => bcrypt($validated['password']),
+                'level' => $validated['level'],
+            ]);
+
+            Log::info('User created successfully:', ['user_id' => $user->id_user]);
+
+            return redirect()->route('user.index')
+                ->with('success', 'Pengguna berhasil ditambahkan');
+        } catch (\Exception $e) {
+            Log::error('Error creating user: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat menambahkan pengguna');
+        }
     }
 
     // Menampilkan form untuk mengedit pengguna
-    public function edit($id)
+    public function edit($id_user)
     {
-        $user = User::findOrFail($id); // Ambil data pengguna berdasarkan ID
+        $user = User::findOrFail($id_user); // Ambil data pengguna berdasarkan ID
         return view('user.edit', compact('user')); // Pastikan nama file Blade sesuai
     }
 
     // Mengupdate data pengguna
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_user)
     {
-        // Validasi dan update data pengguna
+        // Validasi input
         $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:user,username,' . $id,
+            'username' => 'required|string|max:255|unique:user,username,' . $id_user . ',id_user',
             'level' => 'required|string',
         ]);
 
-        $user = User::findOrFail($id);
+        // Update data pengguna
+        $user = User::findOrFail($id_user);
         $user->update($request->only(['nama', 'username', 'level']));
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
 
     // Menghapus data pengguna
-    public function destroy($id)
+    public function destroy($id_user)
     {
-        $user = User::findOrFail($id); // Ambil data pengguna berdasarkan ID
+        $user = User::findOrFail($id_user); // Ambil data pengguna berdasarkan ID
         $user->delete(); // Hapus pengguna
 
         return redirect()->route('user.index')->with('success', 'User deleted successfully.');

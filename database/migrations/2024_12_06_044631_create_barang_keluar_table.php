@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('supliers', function (Blueprint $table) {
-            $table->id();
-            $table->string('id_suplier');
-            $table->string('nama_suplier');
-            $table->string('alamat_suplier');
-            $table->string('telp_suplier');
+        Schema::create('barang_keluar', function (Blueprint $table) {
+            $table->id('id_barang');
+            $table->string('nama_barang');
+            $table->date('tgl_keluar');
+            $table->integer('jml_keluar');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('supliers');
+        Schema::dropIfExists('barang_keluar');
     }
 };

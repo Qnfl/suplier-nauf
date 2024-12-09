@@ -35,8 +35,11 @@ class SupplierController extends Controller
 
     public function edit($id)
     {
-        $suplier = Supplier::findOrFail($id); // Ambil data supplier berdasarkan ID
-        return view('suplier.edit', compact('suplier')); // Pastikan nama file Blade sesuai
+        // $suplier = Supplier::findOrFail($id); // Ambil data supplier berdasarkan ID
+        // return view('suplier.edit', compact('suplier')); // Pastikan nama file Blade sesuai
+
+        $suplier = Supplier::findOrFail($id);
+        return view('suplier.edit', compact('suplier'));
     }
 
     public function update(Request $request, $id)
@@ -52,5 +55,17 @@ class SupplierController extends Controller
         $suplier->update($request->all());
 
         return redirect()->route('suplier.index')->with('success', 'Supplier updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $supplier = Supplier::findOrFail($id);
+        $supplier->delete();
+
+        return redirect()->route('suplier.index')
+            ->with('success', 'Supplier berhasil dihapus');
     }
 }

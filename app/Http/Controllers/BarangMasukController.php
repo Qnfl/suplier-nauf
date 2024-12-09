@@ -1,9 +1,8 @@
 <?php
 
-// app/Http/Controllers/BarangMasukController.php
 namespace App\Http\Controllers;
 
-use App\Models\Barang_Masuk; // Pastikan Anda menggunakan model yang benar
+use App\Models\Barang_Masuk; // Nama model disesuaikan
 use Illuminate\Http\Request;
 
 class BarangMasukController extends Controller
@@ -12,63 +11,69 @@ class BarangMasukController extends Controller
     public function index()
     {
         $barangMasuk = Barang_Masuk::all(); // Ambil semua data barang masuk
-        return view('barang_masuk.index', compact('barangMasuk')); // Pastikan nama file Blade sesuai
+        return view('barang_masuk.index', compact('barangMasuk')); // Tampilkan ke view
     }
 
     // Menampilkan form untuk membuat barang masuk baru
     public function create()
     {
-        return view('barang_masuk.create'); // Tampilkan form untuk menambah barang masuk
+        return view('barang_masuk.create'); // Tampilkan form
     }
 
     // Menyimpan data barang masuk ke database
     public function store(Request $request)
     {
-        // Validasi dan simpan data barang masuk baru
-        $request->validate([
-            'id_barang' => 'required|integer',
+        // Validasi data
+        $validatedData = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'tgl_masuk' => 'required|date',
-            'jml_masuk' => 'required|integer',
-            'id_suplier' => 'required|integer',
+            'jml_masuk' => 'required|integer|min:1', // Tidak boleh negatif
         ]);
 
-        Barang_Masuk::create($request->all()); // Simpan data barang masuk baru
+        // Simpan data barang masuk baru
+        Barang_Masuk::create([
+            'nama_barang' => $validatedData['nama_barang'],
+            'tgl_masuk' => $validatedData['tgl_masuk'],
+            'jml_masuk' => $validatedData['jml_masuk'],
+        ]);
 
-        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk created successfully.');
+        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil ditambahkan.');
     }
 
     // Menampilkan form untuk mengedit barang masuk
-    public function edit($id)
+    public function edit($id_barang)
     {
-        $barangMasuk = Barang_Masuk::findOrFail($id); // Ambil data barang masuk berdasarkan ID
-        return view('barang_masuk.edit', compact('barangMasuk')); // Pastikan nama file Blade sesuai
+        $barangMasuk = Barang_Masuk::findOrFail($id_barang); // Ambil data berdasarkan ID
+        return view('barang_masuk.edit', compact('barangMasuk'));
     }
 
     // Mengupdate data barang masuk
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_barang)
     {
-        // Validasi dan update data barang masuk
-        $request->validate([
-            'id_barang' => 'required|integer',
+        // Validasi data
+        $validatedData = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'tgl_masuk' => 'required|date',
-            'jml_masuk' => 'required|integer',
-            'id_suplier' => 'required|integer',
+            'jml_masuk' => 'required|integer|min:1',
         ]);
 
-        $barangMasuk = Barang_Masuk::findOrFail($id);
-        $barangMasuk->update($request->all());
+        // Update data barang masuk
+        $barangMasuk = Barang_Masuk::findOrFail($id_barang);
+        $barangMasuk->update([
+            'nama_barang' => $validatedData['nama_barang'],
+            'tgl_masuk' => $validatedData['tgl_masuk'],
+            'jml_masuk' => $validatedData['jml_masuk'],
+        ]);
 
-        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk updated successfully.');
+        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil diperbarui.');
     }
 
     // Menghapus data barang masuk
-    public function destroy($id)
+    public function destroy($id_barang)
     {
-        $barangMasuk = Barang_Masuk::findOrFail($id); // Ambil data barang masuk berdasarkan ID
-        $barangMasuk->delete(); // Hapus barang masuk
+        $barangMasuk = Barang_Masuk::findOrFail($id_barang); // Cari data berdasarkan ID
+        $barangMasuk->delete(); // Hapus data
 
-        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk deleted successfully.');
+        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil dihapus.');
     }
 }

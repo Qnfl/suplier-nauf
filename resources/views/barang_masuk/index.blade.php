@@ -24,7 +24,7 @@
           <td class="py-2 px-4 border-b border-gray-200">{{ $barang->tgl_masuk }}</td>
           <td class="py-2 px-4 border-b border-gray-200">{{ $barang->jml_masuk }}</td>
           <td class="py-2 px-4 border-b border-gray-200">
-            <a href="{{ route('barang_masuk.edit', $barang->id_barang) }}" class="bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-1 px-3 rounded">Edit</a>
+            <a href="{{ route('barang_masuk.edit', $barang->id_barang) }}" class="bg-blue-500 hover:bg-yellow-400 text-white font-bold py-1 px-3 rounded">Edit</a>
             <form action="{{ route('barang_masuk.destroy', $barang->id_barang) }}" method="POST" style="display:inline;">
               @csrf
               @method('DELETE')

@@ -26,11 +26,14 @@
           <td class="py-2 px-4 border-b border-gray-200">{{ $stok->jml_keluar }}</td>
           <td class="py-2 px-4 border-b border-gray-200">{{ $stok->total_barang }}</td>
           <td class="py-2 px-4 border-b border-gray-200">
-            <a href="{{ route('stok.edit', $stok->id_barang) }}" class="bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-1 px-3 rounded">Edit</a>
-            <form action="{{ route('stok.destroy', $stok->id_barang) }}" method="POST" style="display:inline;">
+            <!-- Edit Action -->
+            <a href="{{ route('stok.edit', ['id' => $stok->id_barang]) }}" class="bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-1 px-3 rounded">Edit</a>
+
+            <!-- Delete Form -->
+            <form action="{{ route('stok.destroy', ['id' => $stok->id_barang]) }}" method="POST" style="display:inline;">
               @csrf
               @method('DELETE')
-              <button type="submit" class="bg-red-500 hover:bg-red-400 text-white font-bold py-1 px-3 rounded">Hapus</button>
+              <button type="submit" class="bg-red-500 hover:bg-red-400 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Yakin ingin menghapus stok ini?')">Hapus</button>
             </form>
           </td>
         </tr>
